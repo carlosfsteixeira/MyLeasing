@@ -23,7 +23,17 @@ namespace MyLeasing.Web.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        public IActionResult Owners()
         {
             return View();
         }
