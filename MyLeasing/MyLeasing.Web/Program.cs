@@ -24,7 +24,7 @@ namespace MyLeasing.Web
             {
                 var seeder = scope.ServiceProvider.GetService<SeedDB>();
 
-                seeder.SeedAsync().Wait();
+                 seeder.SeedAsync().Wait();
             }
         }
 

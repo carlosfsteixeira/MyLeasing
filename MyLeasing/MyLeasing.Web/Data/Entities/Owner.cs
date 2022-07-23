@@ -7,7 +7,7 @@ namespace MyLeasing.Web.Data.Entities
         [Key]
         public int Id { get; set; }
 
-        public int Document { get; set; }
+        public string Document { get; set; }
 
         public string FirstName { get; set; }
 
@@ -20,5 +20,7 @@ namespace MyLeasing.Web.Data.Entities
         public string Adress { get; set; }
 
         public string FullName => $"{FirstName} {LastName}";
+
+        public User User { get; set; }
     }
 }
