@@ -22,5 +22,23 @@ namespace MyLeasing.Web.Data.Entities
         public string FullName => $"{FirstName} {LastName}";
 
         public User User { get; set; }
+
+        public string Image { get; set; }
+
+        public string ImageFullPath 
+        { 
+            get 
+            {
+                if (string.IsNullOrEmpty(Image))
+                {
+                    return null;
+                }
+                else
+                {
+                    return $"https://localhost:44323{Image.Substring(1)}";
+                }
+
+            } 
+        }
     }
 }

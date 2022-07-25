@@ -75,8 +75,9 @@ namespace MyLeasing.Web.Data
                 FixedPhone = _random.Next(20000000, 299999999),
                 CellPhone = _random.Next(90000000, 999999999),
                 Adress = "Rua da Morada Qualquer " + _random.Next(99).ToString(),
-                User = CreateUser(firstName, lastName)
-            };
+                User = CreateUser(firstName, lastName),
+                Image = $"~/images/owners/user.png",
+        };
 
             _context.Owners.Add(owner);
 

@@ -7,8 +7,14 @@
 <h1>Owner Details</h1>
 
 <div>
-    <h4>Owner</h4>
     <hr />
+    <div class="col-md-4">
+         @if (!string.IsNullOrEmpty(Model.Image))
+         {
+            <img src="@Url.Content(Model.Image)" alt="Image" style="max-height:auto; max-width:100%; width:150px; height:150px; border-radius: 50%;"/>
+         }
+    </div>
+    <br />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Document)
@@ -48,6 +54,8 @@
         </dd>
     </dl>
 </div>
+ 
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
