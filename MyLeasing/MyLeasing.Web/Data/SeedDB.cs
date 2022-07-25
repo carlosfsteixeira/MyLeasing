@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MyLeasing.Web.Data.Entities;
+using MyLeasing.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,57 +11,63 @@ namespace MyLeasing.Web.Data
     public class SeedDB
     {
         private readonly DataContext _context;
-        private readonly UserManager<User> _userManager;
         private Random _random;
-        private List<Owner> listOwners;
+        private IUserHelper _userHelper;
+        List<Owner> owners;
 
-        public SeedDB(DataContext context, UserManager<User> userManager)
+        public SeedDB(DataContext context, IUserHelper userHelper)
         {
             _context = context;
-            _userManager = userManager;
+            _userHelper = userHelper;
             _random = new Random();
-            listOwners = new List<Owner>();
+            owners = new List<Owner>();
         }
 
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
 
+
             //cria os 10 owners
             if (!_context.Owners.Any())
             {
-                AddOwner("Manuel", "Matias");
-                AddOwner("Blimunda", "Saramago");
-                AddOwner("José", "Carneiro");
-                AddOwner("Olivia", "Sousa");
-                AddOwner("António", "Corrida");
-                AddOwner("Filipe", "Estanislau");
-                AddOwner("Gregório", "Tomás");
-                AddOwner("Pedro", "Portas");
-                AddOwner("Bruno", "Uva");
-                AddOwner("Mateus", "Rosa");
+                var tupleListNames = new (string FirstName, string LastName)[]
+                {
+                  ("Manuel", "Matias"),
+                  ("Blimunda", "Saramago"),
+                  ("Jose", "Carneiro"),
+                  ("Olivia", "Sousa"),
+                  ("António", "Corrida"),
+                  ("Filipe", "Estanislau"),
+                  ("Gregório", "Tomás"),
+                  ("Pedro", "Portas"),
+                  ("Bruno", "Uva"),
+                  ("Mateus", "Rosa")
+                 };
+
+                for (int i = 0; i < 10; i++)
+                {
+                    Owner ownerCreated = AddOwner(tupleListNames[i].FirstName, tupleListNames[i].LastName);
+
+                    var result = await _userHelper.AddUserAsync(ownerCreated.User, "123456");
+
+                    if (result != IdentityResult.Success)
+                    {
+                        throw new InvalidOperationException("Could not create user in seeder");
+                    }
+
+                }
+
                 await _context.SaveChangesAsync();
             }
 
-            //atribuir os owners a uma lista para percorrer e atribuir password a cada user de cada owner
-            listOwners = _context.Owners.ToList();
 
-            foreach (Owner owner in listOwners)
-            {
-                var result = await _userManager.AddPasswordAsync(owner.User, "123456");
-
-                if (result != IdentityResult.Success)
-                {
-                    throw new InvalidOperationException("Could not create user in seeder");
-                }
-                    
-            }
         }
 
 
-        private void AddOwner(string firstName, string lastName)
+        private Owner AddOwner(string firstName, string lastName)
         {
-            _context.Owners.Add(new Owner
+            Owner owner = new Owner
             {
                 Document = _random.Next(100000000, 999999999).ToString(),
                 FirstName = firstName,
@@ -69,13 +76,15 @@ namespace MyLeasing.Web.Data
                 CellPhone = _random.Next(90000000, 999999999),
                 Adress = "Rua da Morada Qualquer " + _random.Next(99).ToString(),
                 User = CreateUser(firstName, lastName)
-            });
+            };
 
-           // var result = await _userManager.AddPasswordAsync(owner.User, "123456");
+            _context.Owners.Add(owner);
+
+            return owner;
 
         }
 
-        private  User CreateUser(string firstName, string lastName)
+        private User CreateUser(string firstName, string lastName)
         {
             var username = "user" + _random.Next(1000, 9999).ToString() + "@gmail.com";
 
@@ -89,6 +98,8 @@ namespace MyLeasing.Web.Data
                 PhoneNumber = _random.Next(100000000, 999999999).ToString(),
                 Address = "Rua da Morada Qualquer " + _random.Next(99).ToString(),
             };
+
+            _context.Users.Add(user);
 
             return user;
         }

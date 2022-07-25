@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data;
 using MyLeasing.Web.Data.Entities;
-using System.Linq;
+using MyLeasing.Web.Helpers;
+using System;
 using System.Threading.Tasks;
 
 namespace MyLeasing.Web.Controllers
@@ -10,10 +12,12 @@ namespace MyLeasing.Web.Controllers
     public class OwnersController : Controller
     {
         private readonly IOwnerRepository _ownerRepository;
+        private readonly IUserHelper _userHelper;
 
-        public OwnersController(IOwnerRepository ownerRepository)
+        public OwnersController(IOwnerRepository ownerRepository, IUserHelper userHelper)
         {
             _ownerRepository = ownerRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Owners
@@ -52,7 +56,7 @@ namespace MyLeasing.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Document,FirstName,LastName,FixedPhone,CellPhone,Adress")] Owner owner)
+        public async Task<IActionResult> Create(Owner owner)
         {
             if (ModelState.IsValid)
             {

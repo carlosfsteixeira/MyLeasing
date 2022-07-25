@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyLeasing.Web.Data;
 using MyLeasing.Web.Data.Entities;
+using MyLeasing.Web.Helpers;
 
 namespace MyLeasing.Web
 {
@@ -40,6 +41,8 @@ namespace MyLeasing.Web
             });
 
             services.AddTransient<SeedDB>();
+
+            services.AddScoped<IUserHelper, UserHelper>();
 
             services.AddScoped<IOwnerRepository, OwnerRepository>();
 
