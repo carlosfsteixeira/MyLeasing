@@ -37,7 +37,6 @@ namespace MyLeasing.Web.Data.Entities
                 {
                     return $"https://localhost:44323{Image.Substring(1)}";
                 }
-
             } 
         }
     }
