@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyLeasing.Web.Data;
 
 namespace MyLeasing.Web.Controllers.API
@@ -18,7 +17,7 @@ namespace MyLeasing.Web.Controllers.API
         [HttpGet]
         public IActionResult GetOwners()
         {
-            return Ok(_ownerRepository. GetAllWithUsers());
+            return Ok(_ownerRepository.GetAllWithUsers());
         }
     }
 }

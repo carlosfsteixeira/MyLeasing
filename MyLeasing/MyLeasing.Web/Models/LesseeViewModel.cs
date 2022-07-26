@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyLeasing.Web.Models
 {
-    public class OwnerViewModel : Owner
+    public class LesseeViewModel : Lessee
     {
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }

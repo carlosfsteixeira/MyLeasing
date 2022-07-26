@@ -38,6 +38,11 @@ namespace MyLeasing.Web.Controllers
             return View();
         }
 
+        public IActionResult Lessee()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
