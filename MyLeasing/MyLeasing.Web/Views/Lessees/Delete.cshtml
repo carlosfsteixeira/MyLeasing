@@ -10,10 +10,7 @@
 <br />
 <div>
     <div class="col-md-4">
-        @if (!string.IsNullOrEmpty(Model.Image))
-        {
-        <img src="@Url.Content(Model.Image)" alt="Image" style="max-height:auto; max-width:100%; width:150px; height:150px; border-radius: 50%;"/>
-        }
+        <img src="@Url.Content(Model.ImageFullPath)" alt="Image" style="max-height:auto; max-width:100%; width:150px; height:150px; border-radius: 50%;"/>
     </div>
     <hr />
     <dl class="row">

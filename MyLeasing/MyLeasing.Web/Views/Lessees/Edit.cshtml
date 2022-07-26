@@ -12,7 +12,7 @@
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="Image" />
+            <input type="hidden" asp-for="ImageId" />
             <div class="form-group">
                 <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
@@ -55,10 +55,7 @@
         </form>
     </div>
     <div class="col-md-4">
-         @if (!string.IsNullOrEmpty(Model.Image))
-            {
-                <img src="@Url.Content(Model.Image)" alt="Image" style="max-height:auto; max-width:100%; width:200px; height:200px; border-radius: 50%;"/>
-            }
+        <img src="@Url.Content(Model.ImageFullPath)" alt="Image" style="max-height:auto; max-width:100%; width:200px; height:200px; border-radius: 50%;"/> 
     </div>
 
 </div>

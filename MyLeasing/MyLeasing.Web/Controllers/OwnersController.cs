@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data;
 using MyLeasing.Web.Helpers;
 using MyLeasing.Web.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,14 +13,14 @@ namespace MyLeasing.Web.Controllers
     {
         private readonly IOwnerRepository _ownerRepository;
         private readonly IUserHelper _userHelper;
-        private readonly IImageHelper _imageHelper;
+        private readonly IBlobHelper _blobHelper;
         private readonly IConverterHelper _converterHelper;
 
-        public OwnersController(IOwnerRepository ownerRepository, IUserHelper userHelper, IImageHelper imageHelper, IConverterHelper converterHelper)
+        public OwnersController(IOwnerRepository ownerRepository, IUserHelper userHelper, IBlobHelper blobHelper, IConverterHelper converterHelper)
         {
             _ownerRepository = ownerRepository;
             _userHelper = userHelper;
-            _imageHelper = imageHelper;
+            _blobHelper = blobHelper;
             _converterHelper = converterHelper;
         }
 
@@ -62,13 +63,14 @@ namespace MyLeasing.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var path = string.Empty;
+                Guid imageId = Guid.Empty;
+
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile, "owners");
+                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "owners");
                 }
 
-                var owner = _converterHelper.ToOwner(model, path, true);
+                var owner = _converterHelper.ToOwner(model, imageId, true);
 
                 await _ownerRepository.CreateAsync(owner);
                 return RedirectToAction(nameof(Index));
@@ -138,14 +140,14 @@ namespace MyLeasing.Web.Controllers
             {
                 try
                 {
-                    var path = model.Image;
+                    Guid imageId = model.ImageId;
 
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
-                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "owners");
+                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "owners");
                     }
 
-                    var owner = _converterHelper.ToOwner(model, path, false);
+                    var owner = _converterHelper.ToOwner(model, imageId, false);
 
                     await _ownerRepository.UpdateAsync(owner);
                 }

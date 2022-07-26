@@ -97,7 +97,7 @@ namespace MyLeasing.Web.Data
                 CellPhone = _random.Next(90000000, 999999999),
                 Adress = "Rua do Inquilino " + _random.Next(200).ToString(),
                 User = CreateUser(firstName, lastName),
-                Image = $"~/images/lessee/lessee.png",
+                //ImageId = $"~/images/lessee/lessee.png",
             };
 
             _context.Lessee.Add(lessee);
@@ -116,13 +116,12 @@ namespace MyLeasing.Web.Data
                 CellPhone = _random.Next(90000000, 999999999),
                 Adress = "Rua da Morada Qualquer " + _random.Next(99).ToString(),
                 User = CreateUser(firstName, lastName),
-                Image = $"~/images/owners/user.png",
+                //ImageId = $"~/images/owners/user.png",
             };
 
             _context.Owners.Add(owner);
 
             return owner;
-
         }
 
         private User CreateUser(string firstName, string lastName)

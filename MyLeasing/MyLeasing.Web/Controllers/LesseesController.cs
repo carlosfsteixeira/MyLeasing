@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data;
 using MyLeasing.Web.Helpers;
 using MyLeasing.Web.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,19 +13,19 @@ namespace MyLeasing.Web.Controllers
     {
         private readonly ILesseeRepository _lesseeRepository;
         private readonly IUserHelper _userHelper;
-        private readonly IImageHelper _imageHelper;
+        private readonly IBlobHelper _blobHelper;
         private readonly IConverterHelper _converterHelper;
 
-        public LesseesController(ILesseeRepository lesseeRepository, IUserHelper userHelper, IImageHelper imageHelper, IConverterHelper converterHelper)
+        public LesseesController(ILesseeRepository lesseeRepository, IUserHelper userHelper, IBlobHelper blobHelper, IConverterHelper converterHelper)
         {
             _lesseeRepository = lesseeRepository;
             _userHelper = userHelper;
-            _imageHelper = imageHelper;
+            _blobHelper = blobHelper;
             _converterHelper = converterHelper;
         }
 
         // GET: Lessees
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View(_lesseeRepository.GetAll().OrderBy(e => e.FirstName));
         }
@@ -62,13 +63,14 @@ namespace MyLeasing.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var path = string.Empty;
+                Guid imageId = Guid.Empty;
+
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile, "lessee");
+                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "lessee");
                 }
 
-                var lessee = _converterHelper.ToLessee(model, path, true);
+                var lessee = _converterHelper.ToLessee(model, imageId, true);
 
                 await _lesseeRepository.CreateAsync(lessee);
                 return RedirectToAction(nameof(Index));
@@ -106,14 +108,14 @@ namespace MyLeasing.Web.Controllers
             {
                 try
                 {
-                    var path = model.Image;
+                    Guid imageId = model.ImageId;
 
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
-                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "lessee");
+                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "lessee");
                     }
 
-                    var lessee = _converterHelper.ToLessee(model, path, false);
+                    var lessee = _converterHelper.ToLessee(model, imageId, false);
 
                     await _lesseeRepository.UpdateAsync(lessee);
                 }
