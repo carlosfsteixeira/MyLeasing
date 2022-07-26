@@ -11,7 +11,10 @@
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-             <div class="form-group">
+
+            <partial name = "_Lessees" />
+
+@*             <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
                 <input asp-for="ImageFile" class="form-control" type="file" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
@@ -50,7 +53,8 @@
                 <label asp-for="ImageId" class="control-label"></label>
                 <input asp-for="ImageId" class="form-control" />
                 <span asp-validation-for="ImageId" class="text-danger"></span>
-            </div>
+            </div>*@
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
                 <a asp-action="Index">Back to List</a>

@@ -13,7 +13,10 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="ImageId" />
-            <div class="form-group">
+
+             <partial name = "_Owners" />
+
+@*            <div class="form-group">
                 <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
                 <input asp-for="ImageFile" class="form-control" type="file" />
@@ -47,7 +50,8 @@
                 <label asp-for="Adress" class="control-label"></label>
                 <input asp-for="Adress" class="form-control" />
                 <span asp-validation-for="Adress" class="text-danger"></span>
-            </div>
+            </div>*@
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary">Back to List</a>
