@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data;
 using MyLeasing.Web.Helpers;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace MyLeasing.Web.Controllers
 {
+    [Authorize]
     public class LesseesController : Controller
     {
         private readonly ILesseeRepository _lesseeRepository;
@@ -72,6 +74,8 @@ namespace MyLeasing.Web.Controllers
 
                 var lessee = _converterHelper.ToLessee(model, imageId, true);
 
+                lessee.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
                 await _lesseeRepository.CreateAsync(lessee);
                 return RedirectToAction(nameof(Index));
             }
@@ -116,6 +120,8 @@ namespace MyLeasing.Web.Controllers
                     }
 
                     var lessee = _converterHelper.ToLessee(model, imageId, false);
+
+                    lessee.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
 
                     await _lesseeRepository.UpdateAsync(lessee);
                 }
