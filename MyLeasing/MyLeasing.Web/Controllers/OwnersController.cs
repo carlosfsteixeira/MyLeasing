@@ -51,6 +51,7 @@ namespace MyLeasing.Web.Controllers
         }
 
         // GET: Owners/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -99,6 +100,7 @@ namespace MyLeasing.Web.Controllers
         //}
 
         // GET: Owners/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -174,6 +176,7 @@ namespace MyLeasing.Web.Controllers
         }
 
         // GET: Owners/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
