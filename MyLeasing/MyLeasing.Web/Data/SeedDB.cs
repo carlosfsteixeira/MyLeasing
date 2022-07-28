@@ -33,39 +33,38 @@ namespace MyLeasing.Web.Data
             await _userHelper.CheckRoleAsync("Owner");
             await _userHelper.CheckRoleAsync("Lessee");
 
-       
-            // atribuir admin
-            User userAdmin = new User
-            {
-                Document = _random.Next(100000000, 999999999).ToString(),
-                FirstName = "Carlos",
-                LastName = "Teixeira",
-                Email = "carlost2410@gmail.com",
-                UserName = "carlost2410@gmail.com",
-                PhoneNumber = _random.Next(100000000, 999999999).ToString(),
-                Address = "Rua da Morada Qualquer " + _random.Next(99).ToString(),
-            };
-
-            _context.Users.Add(userAdmin);
-
-            var addUser = await _userHelper.AddUserAsync(userAdmin, "123456");
-
-            if (addUser != IdentityResult.Success)
-            {
-                throw new InvalidOperationException("Could not create user in seeder");
-            }
-
-            //atribuir role de Admin ao user Carlos Teixeira
-            var isInRole = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");
-
-            if (!isInRole)
-            {
-                await _userHelper.AddUserToRoleAsync(userAdmin, "Admin");
-            }
-
             //cria os 10 owners
             if (!_context.Owners.Any())
             {
+                // atribuir admin
+                User userAdmin = new User
+                {
+                    Document = _random.Next(100000000, 999999999).ToString(),
+                    FirstName = "Carlos",
+                    LastName = "Teixeira",
+                    Email = "carlost2410@gmail.com",
+                    UserName = "carlost2410@gmail.com",
+                    PhoneNumber = _random.Next(100000000, 999999999).ToString(),
+                    Address = "Rua da Morada Qualquer " + _random.Next(99).ToString(),
+                };
+
+                _context.Users.Add(userAdmin);
+
+                var addUser = await _userHelper.AddUserAsync(userAdmin, "123456");
+
+                if (addUser != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Could not create user in seeder");
+                }
+
+                //atribuir role de Admin ao user Carlos Teixeira
+                var isInRole = await _userHelper.IsUserInRoleAsync(userAdmin, "Admin");
+
+                if (!isInRole)
+                {
+                    await _userHelper.AddUserToRoleAsync(userAdmin, "Admin");
+                }
+
                 var tupleListOwners = new (string FirstName, string LastName)[]
                 {
                   ("Manuel", "Matias"),
